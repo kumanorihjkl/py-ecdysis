@@ -1,0 +1,93 @@
+# Py-Ecdysis プロジェクトのClineルール
+
+## プロジェクト概要
+Py-Ecdysisは、100%クライアントサイドで動作するPython学習環境です。Pyodide (CPython 3.12 WASM) を使用してブラウザ上でPythonコードを実行できます。
+
+## 技術スタック
+- **フレームワーク**: React 18 + TypeScript 5
+- **ビルドツール**: Vite
+- **スタイリング**: Tailwind CSS
+- **状態管理**: Zustand
+- **UIコンポーネント**: Radix UI
+- **コードエディタ**: Monaco Editor
+- **Python実行環境**: Pyodide v0.27
+- **PWA**: vite-plugin-pwa
+- **パッケージマネージャー**: pnpm
+
+## コーディング規約
+
+### TypeScript/JavaScript
+- TypeScriptの厳格モード（strict: true）を使用
+- 未使用の変数やパラメータは許可しない
+- React Hooksのルールに従う
+- コンポーネントはfunctional componentで記述
+- ファイル拡張子: .ts, .tsx
+
+### フォーマット（Prettier設定）
+- セミコロン: あり
+- シングルクォート使用
+- 行幅: 100文字
+- インデント: スペース2つ
+- 末尾カンマ: ES5準拠
+
+### スタイリング
+- Tailwind CSSのユーティリティクラスを使用
+- ダークモード対応（dark:プレフィックス）
+- レスポンシブデザイン考慮
+
+## プロジェクト構造
+```
+src/
+├── components/      # Reactコンポーネント
+├── hooks/          # カスタムフック
+├── store/          # Zustand状態管理
+├── utils/          # ユーティリティ関数
+├── data/           # 静的データ（チュートリアル等）
+└── styles/         # グローバルスタイル
+```
+
+## 開発時の注意事項
+
+### Pyodide関連
+- CORS設定が必要（vite.config.tsで設定済み）
+- SharedArrayBufferの利用可否を確認（モバイルSafari対応）
+- WASMメモリ上限256MBを考慮
+
+### パフォーマンス
+- Pyodideの初期化は重い処理なので、適切なローディング表示を行う
+- ファイルシステムはIndexedDBを使用して永続化
+- Service Workerでオフライン対応
+
+### アクセシビリティ
+- ARIA属性を適切に使用
+- キーボード操作に対応（Cmd/Ctrl + Enter で実行など）
+- 適切なフォーカス管理
+
+### エラーハンドリング
+- Pyodide実行エラーは適切にキャッチして表示
+- ユーザーフレンドリーなエラーメッセージ
+- 開発時は詳細なエラー情報も提供
+
+## コマンド
+- `pnpm dev` - 開発サーバー起動
+- `pnpm build` - プロダクションビルド
+- `pnpm preview` - ビルド結果のプレビュー
+- `pnpm lint` - ESLintチェック
+- `pnpm format` - Prettierフォーマット
+
+## 新機能追加時の考慮事項
+1. TypeScriptの型定義を必ず追加
+2. ダークモード対応を忘れずに
+3. モバイル対応（レスポンシブデザイン）
+4. アクセシビリティ（ARIA、キーボード操作）
+5. パフォーマンス（特にPyodide関連の処理）
+6. エラーハンドリング
+
+## テスト
+- 現在テストは未実装
+- 将来的にはVitest + React Testing Libraryの導入を検討
+
+## デプロイ
+- 静的サイトとしてデプロイ可能
+- CORS設定に注意（Cross-Origin-Embedder-Policy、Cross-Origin-Opener-Policy）
+- PWA対応のため、HTTPSでのホスティングが必要
