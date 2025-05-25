@@ -3,6 +3,7 @@ import { Header } from './components/Header';
 import { Editor } from './components/Editor';
 import { OutputPanel } from './components/OutputPanel';
 import { TutorialPanel } from './components/TutorialPanel';
+import { ResizablePanel } from './components/ResizablePanel';
 import { useStore } from './store/useStore';
 import { usePyodide } from './hooks/usePyodide';
 import { useFileSystem } from './hooks/useFileSystem';
@@ -69,26 +70,26 @@ function App() {
   return (
     <div className="h-screen bg-gray-50 dark:bg-gray-900 flex flex-col overflow-hidden">
       <Header />
-      <main className="flex-1 flex overflow-hidden">
-        <div className="flex-1 flex">
+      <main className="flex-1 overflow-hidden">
+        <ResizablePanel direction="horizontal" defaultSize={50} minSize={30} maxSize={70}>
           {/* Left Panel - Tutorial */}
-          <div className="w-1/2 flex flex-col border-r border-gray-200 dark:border-gray-700 overflow-hidden">
+          <div className="h-full">
             <TutorialPanel />
           </div>
           
           {/* Right Panel - Editor and Output stacked vertically */}
-          <div className="w-1/2 flex flex-col overflow-hidden">
+          <ResizablePanel direction="vertical" defaultSize={50} minSize={30} maxSize={70}>
             {/* Top - Editor */}
-            <div className="h-1/2 flex flex-col border-b border-gray-200 dark:border-gray-700 overflow-hidden">
+            <div className="h-full">
               <Editor />
             </div>
             
             {/* Bottom - Output */}
-            <div className="h-1/2 flex flex-col overflow-hidden">
+            <div className="h-full">
               <OutputPanel />
             </div>
-          </div>
-        </div>
+          </ResizablePanel>
+        </ResizablePanel>
       </main>
     </div>
   );
