@@ -71,33 +71,36 @@ function App() {
       <Header />
       <main className="flex-1 flex overflow-hidden">
         {layoutMode === 'split' ? (
-          // Split mode: Tutorial, Editor, and Output side by side
+          // Split mode: Tutorial on the left, Editor and Output stacked vertically on the right
           <div className="flex-1 flex">
             {/* Left Panel - Tutorial */}
-            <div className="w-1/3 flex flex-col border-r border-gray-200 dark:border-gray-700">
+            <div className="w-1/2 flex flex-col border-r border-gray-200 dark:border-gray-700">
               <TutorialPanel />
             </div>
             
-            {/* Middle Panel - Editor */}
-            <div className="w-1/3 flex flex-col border-r border-gray-200 dark:border-gray-700">
-              <Editor />
-            </div>
-            
-            {/* Right Panel - Output */}
-            <div className="w-1/3 flex flex-col">
-              <OutputPanel />
+            {/* Right Panel - Editor and Output stacked vertically */}
+            <div className="w-1/2 flex flex-col">
+              {/* Top - Editor */}
+              <div className="h-1/2 flex flex-col border-b border-gray-200 dark:border-gray-700">
+                <Editor />
+              </div>
+              
+              {/* Bottom - Output */}
+              <div className="h-1/2 flex flex-col">
+                <OutputPanel />
+              </div>
             </div>
           </div>
         ) : (
-          // Single mode: Current behavior
-          <div className="flex-1 flex">
-            {/* Left Panel - Editor or Tutorial */}
-            <div className="flex-1 flex flex-col border-r border-gray-200 dark:border-gray-700">
+          // Single mode: Editor and Output stacked vertically
+          <div className="flex-1 flex flex-col">
+            {/* Top Panel - Editor or Tutorial */}
+            <div className="h-1/2 flex flex-col border-b border-gray-200 dark:border-gray-700">
               {activeTab === 'tutorial' ? <TutorialPanel /> : <Editor />}
             </div>
             
-            {/* Right Panel - Output */}
-            <div className="flex-1 flex flex-col">
+            {/* Bottom Panel - Output */}
+            <div className="h-1/2 flex flex-col">
               <OutputPanel />
             </div>
           </div>
