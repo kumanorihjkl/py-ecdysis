@@ -1,5 +1,13 @@
 import React, { useEffect } from 'react';
 
+// 型定義: windowにadmaxadsプロパティを追加
+declare global {
+    interface Window {
+        admaxads?: AdmaxAdType[];
+        __admax_tag__?: any;
+    }
+}
+
 // 広告タイプの型
 type AdmaxAdType = {
     admax_id: string; // 広告ID
