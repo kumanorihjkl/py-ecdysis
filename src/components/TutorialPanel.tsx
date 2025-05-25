@@ -115,22 +115,27 @@ export const TutorialPanel: React.FC = () => {
             前へ
           </button>
 
-          <div className="flex items-center space-x-2">
-            {tutorials.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentTutorialStep(index)}
-                className={`w-2 h-2 rounded-full transition-colors ${
+            <div className="flex flex-col items-center space-y-2">
+              <div className="flex items-center space-x-2">
+                {tutorials.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentTutorialStep(index)}
+                  className={`w-2 h-2 rounded-full transition-colors ${
                   index === tutorial.currentStep
                     ? 'bg-python-blue dark:bg-python-yellow'
                     : tutorial.completedSteps.includes(index)
                     ? 'bg-green-500'
                     : 'bg-gray-300 dark:bg-gray-600'
-                }`}
-                aria-label={`ステップ ${index + 1}`}
-              />
-            ))}
-          </div>
+                  }`}
+                  aria-label={`ステップ ${index + 1}`}
+                />
+                ))}
+              </div>
+              <span className="text-xs text-gray-500 dark:text-gray-400">
+                &copy; {new Date().getFullYear()} <a href="https://github.com/kumanorihjkl">kumanorihjkl</a>
+              </span>
+            </div>
 
           <button
             onClick={handleNext}

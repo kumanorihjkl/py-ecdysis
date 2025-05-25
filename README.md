@@ -1,6 +1,7 @@
 # Py-Ecdysis - インストール不要で動くPython学習環境
 
 100%クライアントサイドで動作するPython学習環境です。Pyodide (CPython 3.12 WASM) を使用してブラウザ上でPythonコードを実行できます。
+[こちら](https://py-ecdysis.pages.dev/)から利用可能です。
 
 ![Py-Ecdysis Screenshot](./screenshot.png)
 
