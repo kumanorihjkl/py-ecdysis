@@ -64,6 +64,15 @@ pnpm build
 pnpm preview
 ```
 
+以下のnpmコマンドでも同様の操作が可能:
+```bash
+# 開発サーバーの起動
+npm run dev
+
+# ビルド
+npm run build
+```
+
 ## 開発
 
 ### プロジェクト構成
