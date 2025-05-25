@@ -30,7 +30,8 @@
 
 ### 5. UI/UX
 - **React + TypeScript + Tailwind CSS** によるモダンなUI
-- 2ペインレイアウト（左: エディタ、右: 出力）
+- **リサイズ可能なパネル** - チュートリアル、エディター、出力パネルのサイズをドラッグで調整可能
+- **独立したスクロール** - 各パネルが独立してスクロール、画面全体のスクロールは無効化
 - **分割表示モード** - チュートリアル、エディター、出力を3カラムで同時表示
 - ダーク/ライトテーマ切り替え
 - 完全なキーボード操作対応（Cmd/Ctrl + Enter で実行など）
@@ -74,6 +75,7 @@ py-ecdysis/
 │   │   ├── Editor.tsx   # コードエディタ
 │   │   ├── OutputPanel.tsx # 出力パネル
 │   │   ├── TutorialPanel.tsx # チュートリアル
+│   │   ├── ResizablePanel.tsx # リサイズ可能なパネル
 │   │   └── ...
 │   ├── hooks/          # カスタムフック
 │   │   ├── usePyodide.ts # Pyodide管理
@@ -82,6 +84,8 @@ py-ecdysis/
 │   ├── store/          # 状態管理
 │   │   └── useStore.ts # Zustand store
 │   ├── utils/          # ユーティリティ
+│   │   ├── shareUrl.ts  # URL共有機能
+│   │   └── editorEvents.ts # エディタリサイズイベント
 │   └── data/           # 静的データ
 │       └── tutorials.ts # チュートリアルコンテンツ
 ├── public/             # 静的ファイル
