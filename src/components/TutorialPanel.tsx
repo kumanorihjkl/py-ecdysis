@@ -74,7 +74,8 @@ export const TutorialPanel: React.FC = () => {
           {/* <!-- admax -->
           <script src="https://adm.shinobi.jp/s/c5bcec4bef12ab44825ddc18dce28ff5"></script>
           <!-- admax --> */}
-          <AdmaxSwitch id="c5bcec4bef12ab44825ddc18dce28ff5" />
+          {/* <AdmaxSwitch id="c5bcec4bef12ab44825ddc18dce28ff5" /> */}
+          <AdmaxSwitch id="59889d691f1b96cd1e71e6a1ae9de5c2" />
 
           {currentTutorial?.code && (
             <div className="mt-6">
