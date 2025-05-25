@@ -43,12 +43,13 @@ export const usePyodide = () => {
         // Initialize Pyodide
         const pyodide = await window.loadPyodide({
           indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.27.0/full/',
-          stdout: (text: string) => {
-            appendOutput(text + '\n');
-          },
-          stderr: (text: string) => {
-            appendOutput(`[stderr] ${text}\n`);
-          },
+          // stdoutとstderrのフックを削除し、Python側のカスタムprint関数に任せる
+          // stdout: (text: string) => {
+          //   appendOutput(text + '\n');
+          // },
+          // stderr: (text: string) => {
+          //   appendOutput(`[stderr] ${text}\n`);
+          // },
         });
 
         // Load micropip
