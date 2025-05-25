@@ -10,6 +10,7 @@ import { useFileSystem } from './hooks/useFileSystem';
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
 import { LoadingScreen } from './components/LoadingScreen';
 import { parseShareUrl } from './utils/shareUrl';
+import { editorEvents } from './utils/editorEvents';
 
 function App() {
   const { theme } = useStore();
@@ -78,7 +79,13 @@ function App() {
           </div>
           
           {/* Right Panel - Editor and Output stacked vertically */}
-          <ResizablePanel direction="vertical" defaultSize={50} minSize={30} maxSize={70}>
+          <ResizablePanel 
+            direction="vertical" 
+            defaultSize={50} 
+            minSize={30} 
+            maxSize={70}
+            onResize={() => editorEvents.emitResize()}
+          >
             {/* Top - Editor */}
             <div className="h-full">
               <Editor />

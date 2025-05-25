@@ -6,6 +6,7 @@ interface ResizablePanelProps {
   minSize?: number;
   maxSize?: number;
   children: [ReactNode, ReactNode];
+  onResize?: () => void;
 }
 
 export const ResizablePanel: React.FC<ResizablePanelProps> = ({
@@ -14,6 +15,7 @@ export const ResizablePanel: React.FC<ResizablePanelProps> = ({
   minSize = 20,
   maxSize = 80,
   children,
+  onResize,
 }) => {
   const [size, setSize] = useState(defaultSize);
   const [isDragging, setIsDragging] = useState(false);
@@ -36,10 +38,19 @@ export const ResizablePanel: React.FC<ResizablePanelProps> = ({
 
       newSize = Math.max(minSize, Math.min(maxSize, newSize));
       setSize(newSize);
+      
+      // Call onResize callback during dragging
+      if (onResize) {
+        onResize();
+      }
     };
 
     const handleMouseUp = () => {
       setIsDragging(false);
+      // Call onResize callback when dragging ends
+      if (onResize) {
+        onResize();
+      }
     };
 
     if (isDragging) {
@@ -55,7 +66,22 @@ export const ResizablePanel: React.FC<ResizablePanelProps> = ({
       document.body.style.cursor = '';
       document.body.style.userSelect = '';
     };
-  }, [isDragging, direction, minSize, maxSize]);
+  }, [isDragging, direction, minSize, maxSize, onResize]);
+
+  // Use ResizeObserver to detect size changes
+  useEffect(() => {
+    if (!containerRef.current || !onResize) return;
+
+    const resizeObserver = new ResizeObserver(() => {
+      onResize();
+    });
+
+    resizeObserver.observe(containerRef.current);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [onResize]);
 
   const handleMouseDown = (e: React.MouseEvent) => {
     e.preventDefault();
