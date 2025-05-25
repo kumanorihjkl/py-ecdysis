@@ -2,8 +2,6 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 export type Theme = 'light' | 'dark';
-export type ActiveTab = 'editor' | 'tutorial';
-export type LayoutMode = 'single' | 'split';
 
 interface ExecutionState {
   isRunning: boolean;
@@ -23,8 +21,6 @@ interface TutorialState {
 interface AppState {
   // UI State
   theme: Theme;
-  activeTab: ActiveTab;
-  layoutMode: LayoutMode;
   
   // Editor State
   code: string;
@@ -38,8 +34,6 @@ interface AppState {
   
   // Actions
   setTheme: (theme: Theme) => void;
-  setActiveTab: (tab: ActiveTab) => void;
-  setLayoutMode: (mode: LayoutMode) => void;
   setCode: (code: string) => void;
   setFileName: (name: string) => void;
   setOutput: (output: string) => void;
@@ -75,8 +69,6 @@ export const useStore = create<AppState>()(
     (set) => ({
       // Initial State
       theme: 'dark',
-      activeTab: 'editor',
-      layoutMode: 'single',
       code: '# Python学習環境へようこそ！\n# ここにPythonコードを入力してください\n\nprint("Hello, Python!")\n',
       fileName: 'main.py',
       execution: initialExecutionState,
@@ -84,8 +76,6 @@ export const useStore = create<AppState>()(
       
       // Actions
       setTheme: (theme) => set({ theme }),
-      setActiveTab: (activeTab) => set({ activeTab }),
-      setLayoutMode: (layoutMode) => set({ layoutMode }),
       setCode: (code) => set({ code }),
       setFileName: (fileName) => set({ fileName }),
       setOutput: (output) => set((state) => ({
@@ -132,7 +122,6 @@ export const useStore = create<AppState>()(
         code: state.code,
         fileName: state.fileName,
         tutorial: state.tutorial,
-        layoutMode: state.layoutMode,
       }),
     }
   )
