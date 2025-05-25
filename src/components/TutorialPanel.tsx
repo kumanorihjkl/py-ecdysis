@@ -6,6 +6,7 @@ import { vscDarkPlus, vs } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import { useStore } from '../store/useStore';
 import { usePyodide } from '../hooks/usePyodide';
 import { tutorials } from '../data/tutorials';
+import { AdmaxSwitch } from './AdMaxSwitch';
 
 export const TutorialPanel: React.FC = () => {
   const { tutorial, setCurrentTutorialStep, completeTutorialStep, setCode, theme } = useStore();
@@ -70,6 +71,10 @@ export const TutorialPanel: React.FC = () => {
               {currentTutorial?.content || ''}
             </ReactMarkdown>
           </div>
+          {/* <!-- admax -->
+          <script src="https://adm.shinobi.jp/s/c5bcec4bef12ab44825ddc18dce28ff5"></script>
+          <!-- admax --> */}
+          <AdmaxSwitch id="c5bcec4bef12ab44825ddc18dce28ff5" />
 
           {currentTutorial?.code && (
             <div className="mt-6">
