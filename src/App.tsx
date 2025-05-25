@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Header } from './components/Header';
 import { Editor } from './components/Editor';
 import { OutputPanel } from './components/OutputPanel';

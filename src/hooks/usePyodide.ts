@@ -19,8 +19,7 @@ export const usePyodide = () => {
     appendOutput, 
     setError: setExecutionError,
     setIsRunning,
-    setVariables,
-    execution
+    setVariables
   } = useStore();
 
   // Initialize Pyodide
