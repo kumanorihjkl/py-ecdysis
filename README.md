@@ -3,7 +3,7 @@
 100%クライアントサイドで動作するPython学習環境です。Pyodide (CPython 3.12 WASM) を使用してブラウザ上でPythonコードを実行できます。
 [こちら](https://py-ecdysis.pages.dev/)から利用可能です。
 
-![Py-Ecdysis Screenshot](./screenshot.png)
+![Py-Ecdysis Screenshot](imgForReadme/screenshot_01.png)
 
 ## 主な機能
 
