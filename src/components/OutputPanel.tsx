@@ -26,8 +26,8 @@ export const OutputPanel: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 flex flex-col bg-gray-50 dark:bg-gray-900">
-      <Tabs.Root defaultValue="output" className="flex-1 flex flex-col">
+    <div className="flex-1 flex flex-col bg-gray-50 dark:bg-gray-900 h-full overflow-hidden">
+      <Tabs.Root defaultValue="output" className="flex-1 flex flex-col h-full">
         <Tabs.List className="flex border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
           <Tabs.Trigger
             value="output"
