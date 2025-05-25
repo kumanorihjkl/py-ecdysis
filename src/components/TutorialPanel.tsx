@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { vscDarkPlus, vs } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { useStore } from '../store/useStore';
 import { usePyodide } from '../hooks/usePyodide';
 import { tutorials } from '../data/tutorials';
 
 export const TutorialPanel: React.FC = () => {
-  const { tutorial, setCurrentTutorialStep, completeTutorialStep, setCode } = useStore();
+  const { tutorial, setCurrentTutorialStep, completeTutorialStep, setCode, theme } = useStore();
   const { runCode } = usePyodide();
   
   const currentTutorial = tutorials[tutorial.currentStep];
@@ -63,7 +65,7 @@ export const TutorialPanel: React.FC = () => {
 
       <div className="flex-1 overflow-auto p-6">
         <div className="max-w-3xl mx-auto">
-          <div className="prose prose-sm dark:prose-invert max-w-none">
+          <div className="prose prose-lg dark:prose-invert max-w-none prose-headings:text-gray-900 dark:prose-headings:text-white prose-h1:text-2xl prose-h1:font-bold prose-h1:mb-4 prose-h2:text-xl prose-h2:font-semibold prose-h2:mb-3 prose-h2:mt-6 prose-h3:text-lg prose-h3:font-medium prose-h3:mb-2 prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-p:leading-relaxed prose-strong:text-gray-900 dark:prose-strong:text-white prose-code:text-python-blue dark:prose-code:text-python-yellow prose-code:bg-gray-100 dark:prose-code:bg-gray-800 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-gray-900 prose-pre:text-gray-100 prose-ul:text-gray-700 dark:prose-ul:text-gray-300 prose-li:marker:text-python-blue dark:prose-li:marker:text-python-yellow">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>
               {currentTutorial?.content || ''}
             </ReactMarkdown>
@@ -83,9 +85,21 @@ export const TutorialPanel: React.FC = () => {
                     実行
                   </button>
                 </div>
-                <pre className="bg-gray-900 text-gray-100 p-3 rounded text-sm overflow-x-auto">
-                  <code>{currentTutorial.code}</code>
-                </pre>
+                <div className="rounded overflow-hidden">
+                  <SyntaxHighlighter
+                    language="python"
+                    style={theme === 'dark' ? vscDarkPlus : vs}
+                    customStyle={{
+                      margin: 0,
+                      fontSize: '14px',
+                      lineHeight: '1.5',
+                    }}
+                    showLineNumbers={true}
+                    wrapLines={true}
+                  >
+                    {currentTutorial.code}
+                  </SyntaxHighlighter>
+                </div>
               </div>
             </div>
           )}
@@ -95,7 +109,7 @@ export const TutorialPanel: React.FC = () => {
               <h3 className="text-sm font-semibold text-blue-800 dark:text-blue-200 mb-2">
                 練習問題
               </h3>
-              <div className="text-sm text-blue-700 dark:text-blue-300">
+              <div className="prose prose-sm dark:prose-invert max-w-none prose-headings:text-blue-800 dark:prose-headings:text-blue-200 prose-p:text-blue-700 dark:prose-p:text-blue-300 prose-code:text-blue-800 dark:prose-code:text-blue-200 prose-code:bg-blue-100 dark:prose-code:bg-blue-900 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-ul:text-blue-700 dark:prose-ul:text-blue-300 prose-li:marker:text-blue-600 dark:prose-li:marker:text-blue-400">
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
                   {currentTutorial.exercise}
                 </ReactMarkdown>
@@ -115,22 +129,27 @@ export const TutorialPanel: React.FC = () => {
             前へ
           </button>
 
-          <div className="flex items-center space-x-2">
-            {tutorials.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentTutorialStep(index)}
-                className={`w-2 h-2 rounded-full transition-colors ${
+            <div className="flex flex-col items-center space-y-2">
+              <div className="flex items-center space-x-2">
+                {tutorials.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentTutorialStep(index)}
+                  className={`w-2 h-2 rounded-full transition-colors ${
                   index === tutorial.currentStep
                     ? 'bg-python-blue dark:bg-python-yellow'
                     : tutorial.completedSteps.includes(index)
                     ? 'bg-green-500'
                     : 'bg-gray-300 dark:bg-gray-600'
-                }`}
-                aria-label={`ステップ ${index + 1}`}
-              />
-            ))}
-          </div>
+                  }`}
+                  aria-label={`ステップ ${index + 1}`}
+                />
+                ))}
+              </div>
+              <span className="text-xs text-gray-500 dark:text-gray-400">
+                &copy; {new Date().getFullYear()} <a href="https://github.com/kumanorihjkl">kumanorihjkl</a>
+              </span>
+            </div>
 
           <button
             onClick={handleNext}
