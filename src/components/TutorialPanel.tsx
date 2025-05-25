@@ -42,8 +42,8 @@ export const TutorialPanel: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 flex flex-col">
-      <div className="bg-gray-100 dark:bg-gray-800 px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+    <div className="flex-1 flex flex-col h-full overflow-hidden">
+      <div className="bg-gray-100 dark:bg-gray-800 px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
             {currentTutorial?.title || 'チュートリアル'}
@@ -105,7 +105,7 @@ export const TutorialPanel: React.FC = () => {
         </div>
       </div>
 
-      <div className="border-t border-gray-200 dark:border-gray-700 px-6 py-4">
+      <div className="border-t border-gray-200 dark:border-gray-700 px-6 py-4 flex-shrink-0">
         <div className="flex items-center justify-between">
           <button
             onClick={handlePrevious}

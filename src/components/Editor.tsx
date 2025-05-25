@@ -1,14 +1,68 @@
-import React, { useRef, useCallback } from 'react';
+import React, { useRef, useCallback, useEffect } from 'react';
 import MonacoEditor from '@monaco-editor/react';
 import { useStore } from '../store/useStore';
 import { useFileSystem } from '../hooks/useFileSystem';
 import { usePyodide } from '../hooks/usePyodide';
+import { editorEvents } from '../utils/editorEvents';
+import type { editor } from 'monaco-editor';
 
 export const Editor: React.FC = () => {
   const { code, setCode, fileName, theme, execution } = useStore();
   const { handleFileUpload } = useFileSystem();
   const { installPackage } = usePyodide();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const editorRef = useRef<editor.IStandaloneCodeEditor | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Listen for resize events and update editor layout
+  useEffect(() => {
+    let resizeTimeout: NodeJS.Timeout;
+    
+    const handleResize = () => {
+      // Clear any existing timeout
+      clearTimeout(resizeTimeout);
+      
+      // Delay the layout update to ensure DOM has updated
+      resizeTimeout = setTimeout(() => {
+        if (editorRef.current) {
+          // Force Monaco Editor to recalculate its layout
+          editorRef.current.layout();
+          
+          // Also trigger a second layout update after a short delay
+          // to handle any async rendering issues
+          setTimeout(() => {
+            if (editorRef.current) {
+              editorRef.current.layout();
+            }
+          }, 100);
+        }
+      }, 50);
+    };
+
+    // Listen to custom resize events
+    editorEvents.addEventListener('resize', handleResize);
+
+    // Also listen to window resize events
+    window.addEventListener('resize', handleResize);
+
+    // Use ResizeObserver to detect container size changes
+    let resizeObserver: ResizeObserver | null = null;
+    if (containerRef.current) {
+      resizeObserver = new ResizeObserver(() => {
+        handleResize();
+      });
+      resizeObserver.observe(containerRef.current);
+    }
+
+    return () => {
+      clearTimeout(resizeTimeout);
+      editorEvents.removeEventListener('resize', handleResize);
+      window.removeEventListener('resize', handleResize);
+      if (resizeObserver) {
+        resizeObserver.disconnect();
+      }
+    };
+  }, []);
 
   const handleEditorChange = (value: string | undefined) => {
     if (value !== undefined) {
@@ -52,8 +106,8 @@ export const Editor: React.FC = () => {
   };
 
   return (
-    <div className="flex-1 flex flex-col" onDrop={handleFileDrop} onDragOver={handleDragOver}>
-      <div className="bg-gray-100 dark:bg-gray-800 px-4 py-2 flex items-center justify-between border-b border-gray-200 dark:border-gray-700">
+    <div className="flex-1 flex flex-col h-full overflow-hidden" onDrop={handleFileDrop} onDragOver={handleDragOver}>
+      <div className="bg-gray-100 dark:bg-gray-800 px-4 py-2 flex items-center justify-between border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
         <div className="flex items-center space-x-3">
           <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
             {fileName}
@@ -89,9 +143,11 @@ export const Editor: React.FC = () => {
         </div>
       </div>
       
-      <div className="flex-1">
-        <MonacoEditor
-          height="100%"
+      <div ref={containerRef} className="flex-1 relative min-h-0">
+        <div className="absolute inset-0">
+          <MonacoEditor
+            height="100%"
+            width="100%"
           language="python"
           theme={theme === 'dark' ? 'vs-dark' : 'light'}
           value={code}
@@ -102,7 +158,7 @@ export const Editor: React.FC = () => {
             lineNumbers: 'on',
             roundedSelection: false,
             scrollBeyondLastLine: false,
-            automaticLayout: true,
+            automaticLayout: false,
             tabSize: 4,
             wordWrap: 'on',
             glyphMargin: true,
@@ -143,6 +199,14 @@ export const Editor: React.FC = () => {
             });
           }}
           onMount={(editor, monaco) => {
+            // Store editor instance
+            editorRef.current = editor;
+            
+            // Force initial layout
+            setTimeout(() => {
+              editor.layout();
+            }, 0);
+            
             // Add line decorations for step execution
             if (execution.currentLine !== null) {
               editor.deltaDecorations(
@@ -165,7 +229,8 @@ export const Editor: React.FC = () => {
               );
             }
           }}
-        />
+          />
+        </div>
       </div>
       
       <div className="absolute bottom-4 right-4 text-xs text-gray-400 dark:text-gray-600 pointer-events-none">
